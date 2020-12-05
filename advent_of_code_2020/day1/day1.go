@@ -5,10 +5,18 @@ import (
 	"io"
 	"strconv"
 	"bufio"
-	"os"
-	"fmt"
-	"log"
 )
+
+func FindTripleSum(list []int, sum int) (int, int, int, error) {
+	for index, element := range list {
+		remainder := sum - element
+		int1, int2, err := FindPairSum(list[index + 1:], remainder)
+		if err == nil {
+			return element, int1, int2, nil
+		}
+	}
+	return -1, -1, -1, errors.New("No pair found that adds to sum :(")
+}
 
 func FindPairSum(list []int, sum int) (int, int, error) {
 	set := generateMap(list)
@@ -43,25 +51,4 @@ func readInts(reader io.Reader) ([]int, error) {
 	}
 
 	return result, scanner.Err()
-}
-
-func main() {
-	goalSum := 2020
-	reader, err := os.Open("input")
-	if err != nil {
-		log.Fatalf("Couldn't open file: %v\n", err)
-	}
-
-	list, err := readInts(reader)
-	if err != nil {
-		log.Fatalf("Couldn't read ints from file: %v\n", err)
-	}
-
-	int1, int2, err := FindPairSum(list, goalSum)
-	if err != nil {
-		log.Fatalf("error finding a pair that adds up to %v: %v\n", goalSum, err)
-	}
-
-	fmt.Printf("Found %v and %v which add up to %v\n", int1, int2, goalSum)
-	fmt.Printf("The product is: %v\n", int1 * int2)
 }
