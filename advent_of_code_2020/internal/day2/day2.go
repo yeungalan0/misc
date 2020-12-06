@@ -1,9 +1,7 @@
-package main
+package day2
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"strconv"
 	"strings"
 )
@@ -14,7 +12,8 @@ type validation struct {
 	Character string
 }
 
-func validatePassword1(input string) (bool, error) {
+// ValidatePassword1 validates the password based on min/max being the min/max character count
+func ValidatePassword1(input string) (bool, error) {
 	validation, password, error := splitValidationAndPassword(input)
 	if error != nil {
 		return false, error
@@ -28,7 +27,8 @@ func validatePassword1(input string) (bool, error) {
 	return false, nil
 }
 
-func validatePassword2(input string) (bool, error) {
+// ValidatePassword2 validates the password based on min/max being the index of the expected character
+func ValidatePassword2(input string) (bool, error) {
 	validation, password, error := splitValidationAndPassword(input)
 	if error != nil {
 		return false, error
@@ -72,15 +72,4 @@ func splitValidationAndPassword(passwordValidationString string) (*validation, *
 	}
 
 	return &validation, &(componentsSlice[3]), nil
-}
-
-func readStrings(reader io.Reader) ([]string, error) {
-	scanner := bufio.NewScanner(reader)
-	var result []string
-
-	for scanner.Scan() {
-		result = append(result, scanner.Text())
-	}
-
-	return result, scanner.Err()
 }

@@ -1,10 +1,10 @@
-package main
+package day1
 
 import "testing"
 
 var testList = []int{1, 2, 3, 4, 5, 6}
 
-func TestFindPairSum(t *testing.T)  {
+func TestFindPairSum(t *testing.T) {
 	expectedSum := 10
 	expectedProduct := 24
 	int1, int2, err := FindPairSum(testList, expectedSum)
@@ -12,16 +12,16 @@ func TestFindPairSum(t *testing.T)  {
 		t.Errorf("Failed finding sum: %v", err)
 	}
 
-	if int1 + int2 != expectedSum {
+	if int1+int2 != expectedSum {
 		t.Errorf("Integers don't sum up to goal - int1: %v, int2 %v, expectedSum: %v", int1, int2, expectedSum)
 	}
 
-	if int1 * int2 != expectedProduct {
+	if int1*int2 != expectedProduct {
 		t.Errorf("Integers don't multiply to expected - int1: %v, int2 %v, expectedWhenMultiplied: %v", int1, int2, expectedProduct)
 	}
 }
 
-func TestFindPairSumErrorsCorrectly(t *testing.T)  {
+func TestFindPairSumErrorsCorrectly(t *testing.T) {
 	tooLargeSum := 1000
 	int1, int2, err := FindPairSum(testList, tooLargeSum)
 
@@ -30,7 +30,7 @@ func TestFindPairSumErrorsCorrectly(t *testing.T)  {
 	}
 }
 
-func TestFindTripleSum(t *testing.T)  {
+func TestFindTripleSum(t *testing.T) {
 	expectedSum := 11
 	expectedProduct := 24
 	int1, int2, int3, err := FindTripleSum(testList, expectedSum)
@@ -38,11 +38,11 @@ func TestFindTripleSum(t *testing.T)  {
 		t.Errorf("Failed finding sum: %v", err)
 	}
 
-	if int1 + int2 + int3 != expectedSum {
+	if int1+int2+int3 != expectedSum {
 		t.Errorf("Integers don't sum up to goal - int1: %v, int2: %v, int3: %v, expectedSum: %v", int1, int2, int3, expectedSum)
 	}
 
-	if int1 * int2 * int3 != expectedProduct {
+	if int1*int2*int3 != expectedProduct {
 		t.Errorf("Integers don't multiply to expected - int1: %v, int2: %v, int3: %v, expectedWhenMultiplied: %v", int1, int2, int3, expectedProduct)
 	}
 }

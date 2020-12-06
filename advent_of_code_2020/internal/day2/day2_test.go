@@ -1,4 +1,4 @@
-package main
+package day2
 
 import (
 	"testing"
@@ -44,7 +44,7 @@ var testCases = []testCase{
 func TestValidatePassword1(t *testing.T) {
 	valid := 0
 	for _, testCase := range testCases {
-		isValid, error := validatePassword1(testCase.input)
+		isValid, error := ValidatePassword1(testCase.input)
 		if error != nil {
 			t.Errorf("Encountered error validating input! input: %v, error: %v", testCase.input, error)
 		}
@@ -64,7 +64,7 @@ func TestValidatePassword1(t *testing.T) {
 func TestValidatePassword2(t *testing.T) {
 	valid := 0
 	for _, testCase := range testCases {
-		isValid, error := validatePassword2(testCase.input)
+		isValid, error := ValidatePassword2(testCase.input)
 		if error != nil {
 			t.Errorf("Encountered error validating input! input: %v, error: %v", testCase.input, error)
 		}

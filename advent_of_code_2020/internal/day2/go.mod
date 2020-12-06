@@ -1,4 +1,4 @@
-module advent_of_code_2020/day2
+module day2
 
 go 1.15
 

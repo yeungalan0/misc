@@ -1,16 +1,14 @@
-package main
+package day1
 
 import (
 	"errors"
-	"io"
-	"strconv"
-	"bufio"
 )
 
+// FindTripleSum find the three integers in the given list that add up to sum
 func FindTripleSum(list []int, sum int) (int, int, int, error) {
 	for index, element := range list {
 		remainder := sum - element
-		int1, int2, err := FindPairSum(list[index + 1:], remainder)
+		int1, int2, err := FindPairSum(list[index+1:], remainder)
 		if err == nil {
 			return element, int1, int2, nil
 		}
@@ -18,6 +16,7 @@ func FindTripleSum(list []int, sum int) (int, int, int, error) {
 	return -1, -1, -1, errors.New("No pair found that adds to sum :(")
 }
 
+// FindPairSum find the two integers in the given list that add up to sum
 func FindPairSum(list []int, sum int) (int, int, error) {
 	set := generateMap(list)
 	for _, element := range list {
@@ -36,19 +35,4 @@ func generateMap(list []int) map[int]bool {
 		set[integer] = true
 	}
 	return set
-}
-
-func readInts(reader io.Reader) ([]int, error) {
-	scanner := bufio.NewScanner(reader)
-	var result []int
-
-	for scanner.Scan() {
-		val, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			return result, err
-		}
-		result = append(result, val)
-	}
-
-	return result, scanner.Err()
 }
