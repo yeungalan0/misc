@@ -9,7 +9,7 @@ import (
 type testCase struct {
 	input        string
 	password     string
-	validation   validation
+	validation   Validation
 	expectValid1 bool
 	expectValid2 bool
 }
@@ -18,24 +18,24 @@ const expectedValid1 = 2
 const expectedValid2 = 1
 
 var testCases = []testCase{
-	testCase{
+	{
 		input:        "1-3 a: abcde",
 		password:     "abcde",
-		validation:   validation{Min: 1, Max: 3, Character: "a"},
+		validation:   Validation{Min: 1, Max: 3, Character: "a"},
 		expectValid1: true,
 		expectValid2: true,
 	},
-	testCase{
+	{
 		input:        "1-3 b: cdefg",
 		password:     "cdefg",
-		validation:   validation{Min: 1, Max: 3, Character: "b"},
+		validation:   Validation{Min: 1, Max: 3, Character: "b"},
 		expectValid1: false,
 		expectValid2: false,
 	},
-	testCase{
+	{
 		input:        "2-9 c: ccccccccc",
 		password:     "ccccccccc",
-		validation:   validation{Min: 2, Max: 9, Character: "c"},
+		validation:   Validation{Min: 2, Max: 9, Character: "c"},
 		expectValid1: true,
 		expectValid2: false,
 	},

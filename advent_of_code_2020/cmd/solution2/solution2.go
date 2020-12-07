@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
-	"internal/day2"
-	"internal/utils"
 	"log"
 	"os"
+
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/day2"
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
 )
 
 func main() {
 	valid1 := 0
 	valid2 := 0
 
-	reader, err := os.Open("input")
+	reader, err := os.Open("config/day2/input")
 
 	if err != nil {
 		log.Fatalf("Couldn't open file: %v\n", err)

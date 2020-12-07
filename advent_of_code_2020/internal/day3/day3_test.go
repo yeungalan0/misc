@@ -24,11 +24,11 @@ var startingCase = testCase{
 		".#..#...#.#",
 	},
 	expectedTreesHit: map[Slope]int{
-		Slope{Right: 1, Down: 1}: 2,
-		Slope{Right: 3, Down: 1}: 7,
-		Slope{Right: 5, Down: 1}: 3,
-		Slope{Right: 7, Down: 1}: 4,
-		Slope{Right: 1, Down: 2}: 2,
+		{Right: 1, Down: 1}: 2,
+		{Right: 3, Down: 1}: 7,
+		{Right: 5, Down: 1}: 3,
+		{Right: 7, Down: 1}: 4,
+		{Right: 1, Down: 2}: 2,
 	},
 }
 

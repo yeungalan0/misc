@@ -2,15 +2,17 @@ package main
 
 import (
 	"fmt"
-	"internal/day1"
-	"internal/utils"
+
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/day1"
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
+
 	"log"
 	"os"
 )
 
 func main() {
 	goalSum := 2020
-	reader, err := os.Open("input")
+	reader, err := os.Open("config/day1/input")
 	if err != nil {
 		log.Fatalf("Couldn't open file: %v\n", err)
 	}

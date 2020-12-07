@@ -6,7 +6,8 @@ import (
 	"strings"
 )
 
-type validation struct {
+// Validation type describing criteria for password validation
+type Validation struct {
 	Min       int
 	Max       int
 	Character string
@@ -42,7 +43,7 @@ func ValidatePassword2(input string) (bool, error) {
 		nil
 }
 
-func splitValidationAndPassword(passwordValidationString string) (*validation, *string, error) {
+func splitValidationAndPassword(passwordValidationString string) (*Validation, *string, error) {
 	passwordValidationString = strings.ReplaceAll(passwordValidationString, ": ", "-")
 	passwordValidationString = strings.ReplaceAll(passwordValidationString, " ", "-")
 
@@ -65,7 +66,7 @@ func splitValidationAndPassword(passwordValidationString string) (*validation, *
 		return nil, nil, error
 	}
 
-	validation := validation{
+	validation := Validation{
 		Min:       min,
 		Max:       max,
 		Character: componentsSlice[2],

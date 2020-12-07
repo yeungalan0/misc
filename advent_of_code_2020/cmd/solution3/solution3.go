@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"internal/day3"
-	"internal/utils"
 	"log"
 	"os"
+
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/day3"
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
 )
 
 func main() {
