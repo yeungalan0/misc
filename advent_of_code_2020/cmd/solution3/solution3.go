@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	reader, err := os.Open("input")
+	reader, err := os.Open("config/day3/input")
 
 	if err != nil {
 		log.Fatalf("Couldn't open file: %v\n", err)

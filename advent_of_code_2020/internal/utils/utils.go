@@ -3,6 +3,8 @@ package utils
 import (
 	"bufio"
 	"io"
+	"log"
+	"os"
 	"strconv"
 )
 
@@ -32,4 +34,19 @@ func ReadStrings(reader io.Reader) ([]string, error) {
 	}
 
 	return result, scanner.Err()
+}
+
+// ReadFileLinesToSlice reads a file and returns each line in a slice
+func ReadFileLinesToSlice(fileName string) []string {
+	reader, err := os.Open(fileName)
+	if err != nil {
+		log.Fatalf("Couldn't open file: %v\n", err)
+	}
+
+	list, err := ReadStrings(reader)
+	if err != nil {
+		log.Fatalf("Couldn't read strings from file: %v\n", err)
+	}
+
+	return list
 }
