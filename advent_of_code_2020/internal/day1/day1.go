@@ -8,7 +8,8 @@ import (
 func FindTripleSum(list []int, sum int) (int, int, int, error) {
 	for index, element := range list {
 		remainder := sum - element
-		int1, int2, err := FindPairSum(list[index+1:], remainder)
+		set := GenerateIntSet(list[index+1:])
+		int1, int2, err := FindPairSum(set, remainder)
 		if err == nil {
 			return element, int1, int2, nil
 		}
@@ -17,9 +18,8 @@ func FindTripleSum(list []int, sum int) (int, int, int, error) {
 }
 
 // FindPairSum find the two integers in the given list that add up to sum
-func FindPairSum(list []int, sum int) (int, int, error) {
-	set := generateMap(list)
-	for _, element := range list {
+func FindPairSum(set map[int]bool, sum int) (int, int, error) {
+	for element := range set {
 		compliment := sum - element
 		if set[compliment] {
 			return element, compliment, nil
@@ -29,7 +29,8 @@ func FindPairSum(list []int, sum int) (int, int, error) {
 	return -1, -1, errors.New("No pair found that adds to sum :(")
 }
 
-func generateMap(list []int) map[int]bool {
+// GenerateIntSet generates a map from a list of ints
+func GenerateIntSet(list []int) map[int]bool {
 	set := make(map[int]bool)
 	for _, integer := range list {
 		set[integer] = true
