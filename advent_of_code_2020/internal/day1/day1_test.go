@@ -1,13 +1,17 @@
 package day1
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
+)
 
 var testList = []int{1, 2, 3, 4, 5, 6}
 
 func TestFindPairSum(t *testing.T) {
 	expectedSum := 10
 	expectedProduct := 24
-	set := GenerateIntSet(testList)
+	set := utils.GenerateIntSet(testList)
 	int1, int2, err := FindPairSum(set, expectedSum)
 	if err != nil {
 		t.Errorf("Failed finding sum: %v", err)
@@ -24,7 +28,7 @@ func TestFindPairSum(t *testing.T) {
 
 func TestFindPairSumErrorsCorrectly(t *testing.T) {
 	tooLargeSum := 1000
-	set := GenerateIntSet(testList)
+	set := utils.GenerateIntSet(testList)
 	int1, int2, err := FindPairSum(set, tooLargeSum)
 
 	if int1 != -1 || int2 != -1 || err == nil {

@@ -2,16 +2,15 @@ package day9
 
 import (
 	"fmt"
-	"log"
-	"strconv"
 
 	"github.com/yeungalan0/misc/advent_of_code_2020/internal/day1"
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
 )
 
 // FindWeakness finds the first number that isn't the sum of two others in the window size
 func FindWeakness(input []string, windowSize int) (int, error) {
-	intList := convertStringListToIntList(input)
-	windowSet := day1.GenerateIntSet(intList[:windowSize])
+	intList := utils.ConvertStringListToIntList(input)
+	windowSet := utils.GenerateIntSet(intList[:windowSize])
 
 	for index, intValue := range intList[windowSize:] {
 		if _, _, error := day1.FindPairSum(windowSet, intValue); error != nil {
@@ -28,7 +27,7 @@ func FindWeakness(input []string, windowSize int) (int, error) {
 // ExploitWeakness finds a continuous set of ints in the input that add up to the input weakness int
 // and sums the max and min in the set
 func ExploitWeakness(input []string, weakness int) (int, error) {
-	intList := convertStringListToIntList(input)
+	intList := utils.ConvertStringListToIntList(input)
 
 	startIndex := 0
 	endIndex := 0
@@ -68,19 +67,4 @@ func sumMinAndMax(intList []int) int {
 	}
 
 	return min + max
-}
-
-func convertStringListToIntList(stringList []string) []int {
-	intList := []int{}
-
-	for _, stringInt := range stringList {
-		intValue, error := strconv.Atoi(stringInt)
-		if error != nil {
-			log.Fatalf("Error converting string to int: %v", stringInt)
-		}
-
-		intList = append(intList, intValue)
-	}
-
-	return intList
 }

@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf("Couldn't read ints from file: %v\n", err)
 	}
 
-	set := day1.GenerateIntSet(list)
+	set := utils.GenerateIntSet(list)
 
 	int1, int2, err := day1.FindPairSum(set, goalSum)
 	if err != nil {

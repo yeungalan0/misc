@@ -2,13 +2,15 @@ package day1
 
 import (
 	"errors"
+
+	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
 )
 
 // FindTripleSum find the three integers in the given list that add up to sum
 func FindTripleSum(list []int, sum int) (int, int, int, error) {
 	for index, element := range list {
 		remainder := sum - element
-		set := GenerateIntSet(list[index+1:])
+		set := utils.GenerateIntSet(list[index+1:])
 		int1, int2, err := FindPairSum(set, remainder)
 		if err == nil {
 			return element, int1, int2, nil
@@ -27,13 +29,4 @@ func FindPairSum(set map[int]bool, sum int) (int, int, error) {
 	}
 
 	return -1, -1, errors.New("No pair found that adds to sum :(")
-}
-
-// GenerateIntSet generates a map from a list of ints
-func GenerateIntSet(list []int) map[int]bool {
-	set := make(map[int]bool)
-	for _, integer := range list {
-		set[integer] = true
-	}
-	return set
 }

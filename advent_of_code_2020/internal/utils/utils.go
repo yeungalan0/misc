@@ -50,3 +50,28 @@ func ReadFileLinesToSlice(fileName string) []string {
 
 	return list
 }
+
+// GenerateIntSet generates a map from a list of ints
+func GenerateIntSet(list []int) map[int]bool {
+	set := make(map[int]bool)
+	for _, integer := range list {
+		set[integer] = true
+	}
+	return set
+}
+
+// ConvertStringListToIntList returns an int list from an input stringList
+func ConvertStringListToIntList(stringList []string) []int {
+	intList := []int{}
+
+	for _, stringInt := range stringList {
+		intValue, error := strconv.Atoi(stringInt)
+		if error != nil {
+			log.Fatalf("Error converting string to int: %v", stringInt)
+		}
+
+		intList = append(intList, intValue)
+	}
+
+	return intList
+}
