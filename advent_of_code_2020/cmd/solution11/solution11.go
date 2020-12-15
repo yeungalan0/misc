@@ -13,7 +13,11 @@ func main() {
 	configFilePath := fmt.Sprintf("%v/day11/input", configDirectory)
 	inputLines := utils.ReadFileLinesToSlice(configFilePath)
 
-	out := day11.GetStabalizedSeatCount(inputLines)
+	out := day11.GetStabalizedSeatCount(inputLines, false)
 
 	fmt.Printf("Problem 1: output: %v\n", out)
+
+	out2 := day11.GetStabalizedSeatCount(inputLines, true)
+
+	fmt.Printf("Problem 2: output: %v\n", out2)
 }

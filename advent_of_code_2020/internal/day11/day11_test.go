@@ -23,15 +23,22 @@ func TestGetStabalizedSeatCount(t *testing.T) {
 				"L.LLLLLL.L",
 				"L.LLLLL.LL",
 			},
-			expectedOutput: 37,
+			expectedOutput:  37,
+			expectedOutput2: 26,
 		},
 	}
 
 	for _, testCase := range testCases {
-		actualOutput := GetStabalizedSeatCount(testCase.input)
+		actualOutput := GetStabalizedSeatCount(testCase.input, false)
 
 		if testCase.expectedOutput != actualOutput {
 			t.Errorf("expected %v, but got %v", testCase.expectedOutput, actualOutput)
+		}
+
+		actualOutput2 := GetStabalizedSeatCount(testCase.input, true)
+
+		if testCase.expectedOutput2 != actualOutput2 {
+			t.Errorf("expected %v, but got %v", testCase.expectedOutput2, actualOutput2)
 		}
 	}
 }
