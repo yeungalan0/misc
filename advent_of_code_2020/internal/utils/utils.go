@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 )
 
@@ -74,4 +75,17 @@ func ConvertStringListToIntList(stringList []string) []int {
 	}
 
 	return intList
+}
+
+// ReverseSlice reverses an arbitrary slice
+// Note: You'll have to use a . cast to convert the interface to the right type,
+// e.g. reverseSlice(operations).([]bitmaskOperations)
+func ReverseSlice(slice interface{}) interface{} {
+	size := reflect.ValueOf(slice).Len()
+	swap := reflect.Swapper(slice)
+	for i, j := 0, size-1; i < j; i, j = i+1, j-1 {
+		swap(i, j)
+	}
+
+	return slice
 }
