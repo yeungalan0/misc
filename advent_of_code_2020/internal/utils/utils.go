@@ -89,3 +89,35 @@ func ReverseSlice(slice interface{}) interface{} {
 
 	return slice
 }
+
+// Contains returns true if the slice contains the given element
+func Contains(element string, slice []string) bool {
+	for _, sliceElement := range slice {
+		if element == sliceElement {
+			return true
+		}
+	}
+
+	return false
+}
+
+// DeleteElements returns a new slice with the input elements deleted (not accounting for duplicates)
+func DeleteElements(elements []string, slice []string) []string {
+	for _, element := range elements {
+		slice = DeleteElement(element, slice)
+	}
+
+	return slice
+}
+
+// DeleteElement returns a new slice with the element deleted
+func DeleteElement(element string, slice []string) []string {
+	for index, sliceElement := range slice {
+		if element == sliceElement {
+			return append(slice[:index], slice[index+1:]...)
+		}
+	}
+
+	// log.Printf("Element (%v) not found in slice (%v)", element, slice)
+	return slice
+}
