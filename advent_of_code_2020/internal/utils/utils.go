@@ -121,3 +121,14 @@ func DeleteElement(element string, slice []string) []string {
 	// log.Printf("Element (%v) not found in slice (%v)", element, slice)
 	return slice
 }
+
+// ReverseString returns the input string reversed
+func ReverseString(theString string) string {
+	runes := []rune(theString)
+
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+
+	return string(runes)
+}
