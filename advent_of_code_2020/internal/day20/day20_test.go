@@ -131,17 +131,17 @@ func TestFitTiles(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		actualOutput := FitTiles(testCase.input)
+		actualOutput := SolveProblem1(testCase.input)
 
 		if testCase.expectedOutput != actualOutput {
 			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput, actualOutput)
 		}
 
-		// actualOutput2 := CalculateRoughWaters(testCase.input)
+		actualOutput2 := CalculateRoughWaters(testCase.input)
 
-		// if testCase.expectedOutput2 != actualOutput2 {
-		// 	t.Errorf("expected %v, but got %v\n", testCase.expectedOutput2, actualOutput2)
-		// }
+		if testCase.expectedOutput2 != actualOutput2 {
+			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput2, actualOutput2)
+		}
 	}
 }
 
@@ -239,6 +239,106 @@ func TestOrientTile(t *testing.T) {
 
 	for _, testCase := range testCases {
 		actualOutput := orientTileEdges(testCase.inputOrientation, testCase.inputTileEdges)
+
+		if !cmp.Equal(testCase.expectedOutput, actualOutput) {
+			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput, actualOutput)
+		}
+	}
+}
+
+func TestOrientTileBody(t *testing.T) {
+	original3x3Tile := tileComponents{
+		body: []string{
+			"#.#",
+			"#..",
+			"##.",
+		},
+	}
+
+	original4x4Tile := tileComponents{
+		body: []string{
+			"#.##",
+			"#...",
+			"##.#",
+			"#...",
+		},
+	}
+
+	testCases := []struct {
+		inputOrientation int
+		inputTile        tileComponents
+		expectedOutput   []string
+	}{
+		{
+			inputOrientation: 0,
+			inputTile:        original3x3Tile,
+			expectedOutput: []string{
+				"#.#",
+				"#..",
+				"##.",
+			},
+		},
+		{
+			inputOrientation: 1,
+			inputTile:        original3x3Tile,
+			expectedOutput: []string{
+				"###",
+				"#..",
+				"..#",
+			},
+		},
+		{
+			inputOrientation: 2,
+			inputTile:        original3x3Tile,
+			expectedOutput: []string{
+				".##",
+				"..#",
+				"#.#",
+			},
+		},
+		{
+			inputOrientation: 3,
+			inputTile:        original3x3Tile,
+			expectedOutput: []string{
+				"#..",
+				"..#",
+				"###",
+			},
+		},
+		{
+			inputOrientation: 4,
+			inputTile:        original3x3Tile,
+			expectedOutput: []string{
+				"#.#",
+				"..#",
+				".##",
+			},
+		},
+
+		{
+			inputOrientation: 1,
+			inputTile:        original4x4Tile,
+			expectedOutput: []string{
+				"####",
+				".#..",
+				"...#",
+				".#.#",
+			},
+		},
+		{
+			inputOrientation: 4,
+			inputTile:        original4x4Tile,
+			expectedOutput: []string{
+				"##.#",
+				"...#",
+				"#.##",
+				"...#",
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		actualOutput := orientTileBody(testCase.inputOrientation, testCase.inputTile)
 
 		if !cmp.Equal(testCase.expectedOutput, actualOutput) {
 			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput, actualOutput)

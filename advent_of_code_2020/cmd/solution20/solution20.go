@@ -13,7 +13,11 @@ func main() {
 	configFilePath := fmt.Sprintf("%v/day20/input", configDirectory)
 	inputLines := utils.ReadFileLinesToSlice(configFilePath)
 
-	out := day20.FitTiles(inputLines)
+	out := day20.SolveProblem1(inputLines)
 
 	fmt.Printf("Problem 1: output: %v\n", out)
+
+	out2 := day20.CalculateRoughWaters(inputLines)
+
+	fmt.Printf("Problem 2: output: %v\n", out2)
 }
