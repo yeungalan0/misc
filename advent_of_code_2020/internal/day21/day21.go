@@ -1,13 +1,44 @@
 package day21
 
 import (
+	"log"
+	"sort"
 	"strings"
+
 	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
 )
 
 type food struct {
 	ingredients []string
 	allergens []string
+}
+
+// GetDangerousIngredientList returns an list of ingredients arranged alphabetically according to the allergen
+func GetDangerousIngredientList(input []string) string {
+	dangerousIngredientList := ""
+	foods := parseInput(input)
+
+	allergensToIngredients := determineIngredientAllergens(foods)
+	// Sanity check
+	for allergen, ingredients := range allergensToIngredients {
+		if len(ingredients) != 1 {
+			log.Fatalf("Allergen still has multiple ingredients! %v: %v", allergen, ingredients)
+		}
+	}
+
+	i := 0
+	keys := make([]string, len(allergensToIngredients))
+	for key := range allergensToIngredients {
+		keys[i] = key
+		i++
+	}
+
+	sort.Strings(keys)
+	for _, key := range keys {
+		dangerousIngredientList += allergensToIngredients[key][0] + ","
+	}
+
+	return dangerousIngredientList[:len(dangerousIngredientList)-1]
 }
 
 // CountNoAllergens counts the number of incgredients listed (with repeats) that don't have an allergen

@@ -17,7 +17,7 @@ func main() {
 
 	fmt.Printf("Problem 1: output: %v\n", out)
 
-	// out2 := day20.CalculateRoughWaters(inputLines)
+	out2 := day21.GetDangerousIngredientList(inputLines)
 
-	// fmt.Printf("Problem 2: output: %v\n", out2)
+	fmt.Printf("Problem 2: output: %v\n", out2)
 }
