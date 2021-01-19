@@ -14,7 +14,7 @@ func TestGetWinningScore(t *testing.T) {
 	testCases := []struct {
 		input           []string
 		expectedOutput  int
-		expectedOutput2 string
+		expectedOutput2 int
 	}{
 		{
 			input: []string{
@@ -33,14 +33,21 @@ func TestGetWinningScore(t *testing.T) {
 				"10",
 			},
 			expectedOutput:  306,
+			expectedOutput2: 291,
 		},
 	}
 
 	for _, testCase := range testCases {
-		actualOutput := GetWinningScore(testCase.input)
+		actualOutput := GetWinningScore(testCase.input, false)
 
 		if testCase.expectedOutput != actualOutput {
 			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput, actualOutput)
+		}
+
+		actualOutput2 := GetWinningScore(testCase.input, true)
+
+		if testCase.expectedOutput2 != actualOutput2 {
+			t.Errorf("expected %v, but got %v\n", testCase.expectedOutput2, actualOutput2)
 		}
 	}
 }
