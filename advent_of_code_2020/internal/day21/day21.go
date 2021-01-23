@@ -113,7 +113,7 @@ func narrowPossibleIngredients(allergen string, allergensToIngredients map[strin
 		}
 
 		for currAllergen := range allergensToIngredients {
-			if len(allergensToIngredients[currAllergen]) == 1 && !utils.Contains(currAllergen, processed) {
+			if len(allergensToIngredients[currAllergen]) == 1 && !utils.Contains(len(processed), func(i int) bool {return processed[i] == currAllergen}) {
 				queue = append(queue, currAllergen)
 			}
 		}
@@ -127,7 +127,7 @@ func narrowPossibleIngredients(allergen string, allergensToIngredients map[strin
 func intersection(stringSlice1 []string, stringSlice2 []string) []string {
 	intersection := []string{}
 	for _, s := range stringSlice1 {
-		if utils.Contains(s, stringSlice2) {
+		if utils.Contains(len(stringSlice2), func(i int) bool {return stringSlice2[i] == s}) {
 			intersection = append(intersection, s)
 		}
 	}

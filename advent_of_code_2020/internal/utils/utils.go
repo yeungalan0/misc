@@ -90,17 +90,6 @@ func ReverseSlice(slice interface{}) interface{} {
 	return slice
 }
 
-// Contains returns true if the slice contains the given element
-func Contains(element string, slice []string) bool {
-	for _, sliceElement := range slice {
-		if element == sliceElement {
-			return true
-		}
-	}
-
-	return false
-}
-
 // DeleteElements returns a new slice with the input elements deleted (not accounting for duplicates)
 func DeleteElements(elements []string, slice []string) []string {
 	for _, element := range elements {
@@ -131,4 +120,24 @@ func ReverseString(theString string) string {
 	}
 
 	return string(runes)
+}
+
+// SliceIndex returns the index of an element found when predicate is true
+// Source: https://stackoverflow.com/questions/8307478/how-to-find-out-element-position-in-slice
+func SliceIndex(limit int, predicate func(i int) bool) int {
+	for i := 0; i < limit; i++ {
+		if predicate(i) {
+			return i
+		}
+	}
+	return -1
+}
+
+// Contains returns a boolean based on whether the element was found by the predicate or not
+func Contains(limit int, predicate func(i int) bool) bool {
+	if SliceIndex(limit, predicate) == -1 {
+		return false
+	}
+
+	return true
 }
