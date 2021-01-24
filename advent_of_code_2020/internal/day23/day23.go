@@ -2,6 +2,7 @@ package day23
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/yeungalan0/misc/advent_of_code_2020/internal/utils"
@@ -26,10 +27,14 @@ type node struct {
 func GetCupLabels(input []string, rounds int, numberOfCups int) string {
 	cups := utils.ConvertStringListToIntList(strings.Split(input[0], ""))
 	cupCircle := getCircularLinkedList(cups, numberOfCups)
-	printCircularLinkedList(cupCircle)
+	// Note: don't run this when you try 1,000,000 cups or tests will timeout
+	// printCircularLinkedList(cupCircle)
 
 	cupsCircleAfterPlay := simulateCrabCups(rounds, cups[0], cupCircle)
-	nodeWith1Val := getNodeByVal(1, cupsCircleAfterPlay)
+	nodeWith1Val, e := getNodeByVal(1, cupsCircleAfterPlay)
+	if e != nil {
+		log.Fatalf("Error finding value in list: val: %v, error: %v\n", 1, e)
+	}
 
 	if numberOfCups > len(cups) {
 		return fmt.Sprint(nodeWith1Val.next.val * nodeWith1Val.next.next.val)
@@ -87,8 +92,11 @@ func getCircularLinkedList(cups []int, numberOfCups int) circularLinkedList {
 	return circularList
 }
 
-func simulateCrabCups(rounds, currentCupVal int, cupCircle circularLinkedList) circularLinkedList {
-	currNode := getNodeByVal(currentCupVal, cupCircle)
+func simulateCrabCups(rounds, currCupVal int, cupCircle circularLinkedList) circularLinkedList {
+	currNode, e := getNodeByVal(currCupVal, cupCircle)
+	if e != nil {
+		log.Fatalf("Error finding value in list: val: %v, error: %v\n", currCupVal, e)
+	}
 
 	for rounds > 0 {
 		closeNodeList := getCloseNodeList(currNode)
@@ -101,6 +109,7 @@ func simulateCrabCups(rounds, currentCupVal int, cupCircle circularLinkedList) c
 		closeNodeList.tail.next = destinationNodeNext
 
 		currNode = currNode.next
+		rounds--
 	}
 
 	return cupCircle
@@ -115,12 +124,17 @@ func getDestinationNode(currNode *node, closeNodeList linkedList, cupCircle circ
 
 	for {
 		destinationNodeVal--
-		if destinationNodeVal < 0 {
+		if destinationNodeVal < 1 {
 			destinationNodeVal = len(cupCircle.nodes)
 		}
 
 		if !valueInList(destinationNodeVal, closeNodeList) {
-			return getNodeByVal(destinationNodeVal, cupCircle)
+			destinationNode, e := getNodeByVal(destinationNodeVal, cupCircle)
+			if e != nil {
+				log.Fatalf("Error finding value in list: val: %v, error: %v\n", destinationNode, e)
+			}
+			
+			return destinationNode
 		}
 	}
 }
@@ -128,10 +142,10 @@ func getDestinationNode(currNode *node, closeNodeList linkedList, cupCircle circ
 func valueInList(val int, list linkedList) bool {
 	currNode := list.head
 	for currNode != nil {
-		if currNode.val == val {
-			return true
-		} else if list.tail.next != nil && currNode.val == list.tail.next.val {
+		if list.tail.next != nil && currNode.val == list.tail.next.val {
 			break
+		} else if currNode.val == val {
+			return true
 		}
 
 		currNode = currNode.next
@@ -140,117 +154,10 @@ func valueInList(val int, list linkedList) bool {
 	return false
 }
 
-func getNodeByVal(val int, cupCircle circularLinkedList) *node {
-	return cupCircle.nodes[(val % len(cupCircle.nodes)) - 1]
+func getNodeByVal(val int, cupCircle circularLinkedList) (*node, error) {
+	i := val - 1
+	if i < 0 || i >= len(cupCircle.nodes) {
+		return nil, fmt.Errorf("value not in list")
+	}
+	return cupCircle.nodes[val - 1], nil
 }
-
-// func simulateCrabCups(cups []int, rounds int) []int {
-// 	numberOfCups := len(cups)
-// 	newCups := make([]int, numberOfCups)
-// 	currCupIndex := 0
-
-// 	for rounds > 0 {
-// 		offset := 0
-// 		closeCupIndexes := getCupsWithCircularIndexes(currCupIndex + 1, currCupIndex + 4, numberOfCups)
-// 		destinationCupIndex := getDestinationCupIndex(currCupIndex, closeCupIndexes, cups)
-
-// 		newCups[0] = cups[currCupIndex]
-// 		offset++
-// 		newCups = fillSliceIndexes(offset, closeCupIndexes[2] + 1, destinationCupIndex + 1, cups, newCups)
-// 		offset += circularIndexLength(closeCupIndexes[2] + 1, destinationCupIndex + 1, numberOfCups)
-// 		newCups = fillSliceIndexes(offset, currCupIndex + 1, currCupIndex + 4, cups, newCups)
-// 		offset += circularIndexLength(currCupIndex + 1, currCupIndex + 4, numberOfCups)
-// 		newCups = fillSliceIndexes(offset, destinationCupIndex + 1, currCupIndex, cups, newCups)
-
-// 		currCupIndex = getNewCurrCupIndex(cups[currCupIndex], newCups)
-// 		cups, newCups = newCups, cups
-// 		rounds--
-// 	}
-
-// 	return cups
-// }
-
-// func circularIndexLength(startIndex, endIndex, numberOfCups int) int {
-// 	startIndex = startIndex % numberOfCups
-// 	endIndex = endIndex % numberOfCups
-
-// 	if endIndex < startIndex {
-// 		endIndex += numberOfCups
-// 	}
-
-// 	return endIndex - startIndex
-// }
-
-// func fillSliceIndexes(offset, oldSliceStartIndex, oldSliceEndIndex int, oldSlice, newSlice []int) []int {
-// 	sliceLen := len(oldSlice)
-// 	oldSliceStartIndex = oldSliceStartIndex % sliceLen
-// 	oldSliceEndIndex = oldSliceEndIndex % sliceLen
-
-// 	if oldSliceEndIndex < oldSliceStartIndex {
-// 		oldSliceEndIndex += sliceLen
-// 	}
-
-// 	for i := oldSliceStartIndex; i < oldSliceEndIndex; i++ {
-// 		newSlice[(offset + i - oldSliceStartIndex) % sliceLen] = oldSlice[i % sliceLen]
-// 	}
-
-// 	return newSlice
-// }
-
-// func getValuesFromIndexes(slice, indexes []int) []int {
-// 	values := []int{}
-// 	for _, i := range indexes {
-// 		values = append(values, slice[i])
-// 	}
-
-// 	return values
-// }
-
-// func getNewCurrCupIndex(currCupVal int, newCups []int) int {
-// 	numberOfCups := len(newCups)
-// 	currCupIndex := utils.SliceIndex(numberOfCups, func(i int) bool {return newCups[i] == currCupVal})
-// 	newCurrCupIndex := (currCupIndex + 1) % numberOfCups
-// 	return newCurrCupIndex
-// }
-
-// func getDestinationCupIndex(currCupIndex int, closeCupIndexes, cups []int) int {
-// 	currCupVal := cups[currCupIndex]
-// 	destinationIndex := -1
-
-//     for destinationIndex == -1 {
-// 		currCupVal--
-// 		if currCupVal < 0 {
-// 			currCupVal = 9
-// 		}
-
-// 		possibleIndex := utils.SliceIndex(len(cups), func(i int) bool {return cups[i] == currCupVal})
-// 		isInCloseCupIndexes := utils.Contains(len(closeCupIndexes), func(i int) bool {return closeCupIndexes[i] == possibleIndex})
-
-// 		if possibleIndex == currCupIndex {
-// 			log.Fatalf("Looping detected! possbileIndex: %v, currCupIndex: %v", possibleIndex, currCupIndex)
-// 		}
-
-// 		if !isInCloseCupIndexes {
-// 			destinationIndex = possibleIndex
-// 		}
-// 	}
-
-// 	return destinationIndex
-// }
-
-// // getCupsWithCircularIndexes returns the indexes in cirular fashion inclusive of start and exclusive of end
-// func getCupsWithCircularIndexes(startIndex, endIndex, numberOfCups int) []int {
-// 	indexes := []int{}
-// 	startIndex = startIndex % numberOfCups
-// 	endIndex = endIndex % numberOfCups
-
-// 	if endIndex < startIndex {
-// 		endIndex += 9
-// 	}
-
-// 	for i := startIndex; i < endIndex; i++ {
-// 		indexes = append(indexes, i % numberOfCups)
-// 	}
-
-// 	return indexes
-// }
