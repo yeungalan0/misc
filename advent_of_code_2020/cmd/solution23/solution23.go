@@ -17,7 +17,7 @@ func main() {
 
 	fmt.Printf("Problem 1: output: %v\n", out)
 
-	// out2 := day22.GetWinningScore(inputLines, true)
+	out2 := day23.GetCupLabels(inputLines, 10000000, 1000000)
 
-	// fmt.Printf("Problem 2: output: %v\n", out2)
+	fmt.Printf("Problem 2: output: %v\n", out2)
 }
