@@ -35,7 +35,7 @@ func TestBlackTileLayoutCount(t *testing.T) {
 				"neswnwewnwnwseenwseesewsenwsweewe",
 				"wseweeenwnesenwwwswnew",
 			},
-			expectedOutput: 10,
+			expectedOutput:  10,
 			expectedOutput2: 2208,
 		},
 	}
@@ -57,33 +57,33 @@ func TestBlackTileLayoutCount(t *testing.T) {
 
 func TestFlipByRules(t *testing.T) {
 	testCases := []struct {
-		tileLocSet map[tileLoc]bool
-		rounds int
+		tileLocSet     map[tileLoc]bool
+		rounds         int
 		expectedOutput int
 	}{
-		// {
-		// 	tileLocSet: map[tileLoc]bool{
-		// 		{row: 1, col: 0}: true,
-		// 		{row: 1, col: 1}: true,
-		// 		{row: 0, col: 0}: true,
-		// 	},
-		// 	rounds: 1,
-		// 	expectedOutput: 6,
-		// },
-		// {
-		// 	tileLocSet: map[tileLoc]bool{
-		// 		{row: 1, col: 0}: true,
-		// 		{row: 1, col: 1}: true,
-		// 		{row: 0, col: 0}: true,
-		// },
-		// 	rounds: 2,
-		// 	expectedOutput: 9,
-		// },
+		{
+			tileLocSet: map[tileLoc]bool{
+				{row: 1, col: 0}: true,
+				{row: 1, col: 1}: true,
+				{row: 0, col: 0}: true,
+			},
+			rounds:         1,
+			expectedOutput: 6,
+		},
+		{
+			tileLocSet: map[tileLoc]bool{
+				{row: 1, col: 0}: true,
+				{row: 1, col: 1}: true,
+				{row: 0, col: 0}: true,
+			},
+			rounds:         2,
+			expectedOutput: 9,
+		},
 		{
 			tileLocSet: map[tileLoc]bool{
 				{row: 0, col: 0}: true,
 			},
-			rounds: 1,
+			rounds:         1,
 			expectedOutput: 0,
 		},
 	}

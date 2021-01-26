@@ -1,6 +1,8 @@
 package day24
 
-import "log"
+import (
+	"log"
+)
 
 // Plans of attack:
 
@@ -56,17 +58,20 @@ func flipByRules(tileLocSet map[tileLoc]bool, rounds int) map[tileLoc]bool {
 	if rounds == 0 {
 		return tileLocSet
 	}
-	
+
 	tileLocToNeighborCount := map[tileLoc]int{}
 	for aTileLoc, isBlack := range tileLocSet {
 		if isBlack {
 			tileLocToNeighborCount = updateNeighborCounts(aTileLoc, true, tileLocToNeighborCount)
 		}
+
+		if _, isPresent := tileLocToNeighborCount[aTileLoc]; !isPresent {
+			tileLocToNeighborCount[aTileLoc] = 0
+		}
 	}
 
 	for rounds > 0 {
 		flipQueue := []tileLoc{}
-
 		for aTileLoc, blackNeighborCount := range tileLocToNeighborCount {
 			if (blackNeighborCount == 0 || blackNeighborCount > 2) && tileLocSet[aTileLoc] {
 				flipQueue = append(flipQueue, aTileLoc)
