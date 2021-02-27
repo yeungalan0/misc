@@ -1,3 +1,8 @@
+import os 
+
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+INPUT_FILE = DIR_PATH + "/input.txt"
+
 def code_quest(number_string):
     number = int(number_string)
     if number % 21 == 0:
@@ -10,9 +15,9 @@ def code_quest(number_string):
         print(number)
 
 def main():
-    with open("input.txt") as f:
+    with open(INPUT_FILE) as f:
         for line in f:
-            code_quest(line)
+            code_quest(line.strip())
 
 if __name__ == "__main__":
     main()
