@@ -2,5 +2,5 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: 'echo "TODO: Replace with init/build command"'
+  - init: pip3 install -r code_quest_mentoring/2021/requirements.txt
     command: 'cd code_quest_mentoring/2021'
