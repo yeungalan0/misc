@@ -1,5 +1,5 @@
 import pytest
-import problem_0
+import problem
 import io
 import os
 
@@ -21,7 +21,7 @@ def test_main(capsys, monkeypatch):
     monkeypatch.setattr('sys.stdin', io.StringIO(input))
 
     # Call our main function to ultimately solve the problem
-    problem_0.main()
+    problem.main()
 
     # Capture the program output from stdout/stderr
     actual_output = capsys.readouterr().out.rstrip("\n")

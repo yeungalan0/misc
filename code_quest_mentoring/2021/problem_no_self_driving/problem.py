@@ -19,7 +19,7 @@ def solve(case):
         else:
             print("SAFE")
     except ZeroDivisionError as e:
-        print("gtrgrr")
+        print("SAFE")
 
 
 # Logic to read to input and pass to our solving function
