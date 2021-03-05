@@ -11,7 +11,7 @@ def solve(case):
 # Logic to read to input and pass to our solving function
 def main():
     cases = int(sys.stdin.readline().rstrip())
-    for case_num in range(cases):
+    for _ in range(cases):
         case = sys.stdin.readline().rstrip()
         solve(case)
 
