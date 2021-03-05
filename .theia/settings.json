@@ -5,5 +5,10 @@
         120
     ],
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.dataScience.allowImportFromNotebook": false,
+    "python.dataScience.jupyterCommandLineArguments": [],
+    "python.dataScience.searchForJupyter": false,
+    "python.dataScience.showJupyterVariableExplorer": false,
+    "python.dataScience.useDefaultConfigForJupyter": false
 }
