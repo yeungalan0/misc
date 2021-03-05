@@ -1,10 +1,6 @@
 image:
   file: .gitpod.Dockerfile
 
-vscode:
-  extensions:
-    - almenon.arepl@1.0.20:Uu7lIOwyLgmNWpTwCl/iqQ==
-
 tasks:
   - init: pip3 install -r code_quest_mentoring/2021/requirements.txt
-    command: 'cd code_quest_mentoring/2021'
+    command: "cd code_quest_mentoring/2021"
