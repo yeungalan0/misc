@@ -16,6 +16,7 @@ with open(f"{DIR_PATH}/expected_output.txt", 'r') as file:
 with open(f"{DIR_PATH}/input.txt", 'r') as file:
     input = file.read()
 
+
 def test_main(capsys, monkeypatch):
     # Mock stdin to pass in our input
     monkeypatch.setattr('sys.stdin', io.StringIO(input))

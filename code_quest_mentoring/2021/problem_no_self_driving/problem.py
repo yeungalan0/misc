@@ -2,6 +2,7 @@ import sys
 import math
 import string
 
+
 # Actual solution logic should go here
 def solve(case):
     velocity, distance = case.split(":")
@@ -28,6 +29,7 @@ def main():
     for case_num in range(cases):
         case = sys.stdin.readline().rstrip()
         solve(case)
+
 
 if __name__ == "__main__":
     main()
