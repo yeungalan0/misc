@@ -2,6 +2,7 @@ import sys
 import math
 import string
 
+
 # Actual solution logic should go here
 def solve(case):
     velocity, distance = case.split(":")
@@ -18,16 +19,17 @@ def solve(case):
             print("BRAKE")
         else:
             print("SAFE")
-    except ZeroDivisionError as e:
-        print("gtrgrr")
+    except ZeroDivisionError:
+        print("SAFE")
 
 
 # Logic to read to input and pass to our solving function
 def main():
     cases = int(sys.stdin.readline().rstrip())
-    for case_num in range(cases):
+    for _ in range(cases):
         case = sys.stdin.readline().rstrip()
         solve(case)
+
 
 if __name__ == "__main__":
     main()

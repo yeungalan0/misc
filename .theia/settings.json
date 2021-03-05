@@ -3,5 +3,9 @@
     "editor.rulers": [
         80,
         120
-    ]
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.dataScience.disableJupyterAutoStart": true,
+    "python.dataScience.jupyterCommandLineArguments": []
 }
