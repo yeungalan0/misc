@@ -6,10 +6,6 @@
     ],
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.dataScience.allowImportFromNotebook": false,
-    "python.dataScience.jupyterCommandLineArguments": [],
-    "python.dataScience.searchForJupyter": false,
-    "python.dataScience.showJupyterVariableExplorer": false,
-    "python.dataScience.useDefaultConfigForJupyter": false,
-    "python.dataScience.sendSelectionToInteractiveWindow": false
+    "python.dataScience.disableJupyterAutoStart": true,
+    "python.dataScience.jupyterCommandLineArguments": []
 }
