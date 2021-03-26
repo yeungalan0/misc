@@ -45,7 +45,7 @@ def main():
         iterations = int(sys.stdin.readline().rstrip())
         grid = []
 
-        for i in range(10):
+        for _ in range(10):
             grid.append(sys.stdin.readline().rstrip())
 
         solve(iterations, grid)
