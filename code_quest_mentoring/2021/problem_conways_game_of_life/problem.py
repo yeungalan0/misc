@@ -8,13 +8,12 @@ DEAD = 0
 
 
 def solve(iterations, grid):
-    print(f"Iterations: {iterations}")
-    print(f"Grid: {len(grid)}")
     int_grid = convert_to_int_grid(grid)
-    print("ORIGINAL:")
-    print_grid(int_grid)
-    print("NEW:")
-    print_grid(evolve(int_grid))
+    evolved_grid = int_grid
+    for _ in range(iterations):
+        evolved_grid = evolve(evolved_grid)
+
+    print_grid(evolved_grid)
 
 
 def evolve(grid):
@@ -36,7 +35,7 @@ def evolve(grid):
 
 def print_grid(grid):
     for row in grid:
-        print(row)
+        print("".join([str(x) for x in row]))
 
 
 def convert_to_int_grid(grid):
@@ -65,8 +64,9 @@ def count_adjacent_neighbors(row, col, grid):
 
 def copy_grid(grid):
     grid_clone = []
+
     for row in grid:
-        grid_clone.append(row)
+        grid_clone.append(row.copy())
 
     return grid_clone
 
