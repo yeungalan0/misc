@@ -1,0 +1,309 @@
+4.4 Check balanced
+
+Hints: -
+
+Questions:
+* Assume it means height of any two subtrees on the same level never differ by more than one?
+* Assume valid input?
+* Null input?
+
+* Heights never differ by more than 1
+
+1. for children of root, calculate heights, if off by more then 1 return false
+2. calculate_height is recursive and will go down to the leaf layer
+3. return a each parent and parent returns larger of heights
+
+O(n) where n is the number of tree nodes, which is the BCR # This is wrong given my new understanding
+
+def is_balanced(root):
+    left_height = get_height(root.left)
+    right_height = get_height(root.right)
+
+    if abs(left_height - right_height) > 1:
+        return False 
+    else:
+        return is_balanced(root.left) && is_balanced(root.right)
+
+def get_height(node):
+    if not node:
+        return -1 # Single node is height 0
+
+    left_height = get_height(node.left)
+    right_height = get_height(node.right)
+
+    return max(left_height, right_height) + 1
+
+If I can modify the node class to store height information then I think my 
+above algorithm can still be used to set the height, otherwise you could do it 
+on tree creation, but then the problem would be trivial
+
+The algorithm is now O(N log N) since...honestly I don't really see why.  
+
+Rating: 
+1. 2
+2. 2
+3. 2
+4. 1
+
+1.7 Rotate matrix
+
+Hints: 
+
+Questions:
+* Can I use a temporary data structure?
+* Can I assume valid input?
+* Can I assume a matrix size of at least 1?
+
+BCR: O(n^2), as every element in the matrix needs to be touched at least once.
+
+We could also create a new array and read each row/column into their proper place
+We could store the top, right, bottom, and left elements into an array, and place them properly in the new place.
+
+I think we can actually do this without an array, and just a temporary variable by updating one side at a time
+1. Store bottom left element as temporary value
+2. Store right into another temporary value (temp_right) and put top on the right
+3. Store bottom into another temporary value(temp_bottom) and put temp_right on bottom
+4. Put temp_bottom on left
+5. Put tem on top
+6. Recurse into layer
+
+[
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [2, 2, 2, 2],
+    [3, 3, 3, 3]
+]
+
+start = 0
+end = 3
+
+for i in range(0, 4)
+
+offset = 3
+
+temp = matrix[3][0] = 3
+temp_right = matrix[0][3] = 0
+matrix[0][3] = 0 -> matrix[0][0] = 0
+
+def rotate_matrix(matrix):
+    start = 0
+    end = len(matrix) - 1
+
+    while start < end:
+        for i in range(start, end + 1):
+            offset = end - i 
+
+            temp = matrix[end][i]
+            temp_right = matrix[i][end]
+            matrix[i][end] = matrix[start][i] # top -> right
+            temp_bottom = matrix[end][offset]
+            matrix[end][offset] = temp_right # right -> bottom
+            matrix[end][i] = temp_bottom # bottom -> left
+            matrix[start][i] = temp # left -> top
+
+        start += 1
+        end = len(matrix) - start - 1
+
+    return matrix
+
+Rating:
+1. 5
+2. 4
+3. 5
+4. 1
+
+3.3 Stack of plates
+
+Hints: Peeked at with algorithm...not helpful
+
+Questions:
+* Should we pass a stack capacity to SetOfStacks or default it to some number?
+* Do old stacks need to be kept...in another stack or can I use another data structure?
+* If I keep stacks in another data structure do I need to think about scaling that as well when that reaches a capacity?
+
+Algorithm:
+1. have a current_stack pointer and fill current_stack to stack_capacity (using a counter)
+2. when at stack_capacity add current_stack to stack_of_stacks and create new current_stack
+3. if current_stack.is_empty() pop stack_of_stacks as current_stack
+
+class SetOfStacks():
+    def __init__():
+        self.stack_capacity = 100
+        self.current_stack_size = 0
+        self.current_stack = stack()
+        self.stack_of_stacks = stack()
+
+    def pop():
+        if !self.current_stack.is_empty():
+            return self.current_stack.pop()
+        elif !self.stack_of_stacks.is_empty():
+            self.current_stack = self.stack_of_stacks.pop()
+            return self.current_stack.pop()
+        else:
+            # Note custom exception created, would probably look up if there's a more appropriate standard exception type first
+            raise EmptyStackException("the SetOfStacks is empty!")
+
+    def push(value):
+        if self.current_stack_size < self.stack_capacity:
+            self.current_stack.push(value)
+            count += 1
+            return
+
+        self.stack_of_stacks.push(self.current_stack)
+        self.current_stack = stack()
+        self.current_stack_size = 0
+        self.current_stack.push(value)
+
+Follow up: 
+
+I could use an array now instead of a stack for quick access to a specific 
+stack, but the capacity would decrease from pop()...is that ok?
+
+* If it is an issue we could "propagate" the removed capacity and push other elements from other stacks on...
+though this would be quite slow, the time complexity for this propagation could be O(n) where n is the SetOfStacks 
+count of values
+
+Rating:
+1. 4
+2. 5
+3. 4
+4. 5
+
+
+3.5 sort stack...with stack
+
+! Smallest items on top
+
+Hints: (looked, but developed similar algorithm already...I think)
+
+* Are the values all positive integers?
+* Am I allowed more than one extra stack?
+* Will I have to handle an empty stack?
+
+push, pop, peek, is_empty
+
+stack( 4, 653, 2, 5234, 635, 43, 4, 1 )
+
+stack()
+
+Using a variable max we can iterate through a stack pushing all elements onto another stack, and setting the max to the 
+found max, pop elements off the full stack until you have the max and save it popping other elements, when one stack is 
+empty push the max onto the empty stack, you can count the elements to avoid popping the new max, and iterate finding 
+each max and adding to a stack.
+
+^ logic above was flawed in terms of thinking I needed a counter...0
+
+# Poorly done and lost in this algorithm...far from optimal
+def sort_stack(unsorted_stack):
+    sorted_stack = stack()
+    unsorted_count = 0
+    current_max = -INT_MAX
+
+    while !unsorted_stack.is_empty():
+        unsorted_count += 1
+
+        val = unsorted_stack.pop()
+
+        if val > current_max:
+            if current_max != -INT_MAX:
+                sorted_stack.push(current_max)
+            
+            current_max = val
+        else:
+            sorted_stack.push(current_max)
+
+    while !sorted_stack.is_empty():
+        unsorted_stack.push(sorted_stack.pop())
+
+    sorted_stack.push(current_max)
+
+def sort_stack(my_stack):
+    new_stack = stack()
+
+    count = 0
+    sorted_top = None
+    current_max = -INT_MAX
+
+    while !my_stack.is_empty():
+        count += 1
+        val = my_stack.pop()
+
+        if val > current_max:
+            if current_max != -INT_MAX:
+                new_stack.push(current_max)
+
+            current_max = val
+        else:
+            new_stack.push(val)
+
+    my_stack.push(current_max)
+
+def sort_stack_helper(unsorted_stack, sorted_stack, unsorted_count):
+    is_sorted = True
+    count = 0
+
+    while !unsorted_stack.is_empty() and count < unsorted_count:
+        count += 1
+        val = unsorted_stack.pop()
+
+        if val > current_max:
+            if current_max != -INT_MAX:
+                sorted_stack.push(current_max)
+
+            current_max = val
+        else:
+            sorted_stack.push(val)
+
+    my_stack.push(current_max)
+
+Rating:
+1. 2
+2. 1
+3. 1
+4. 1
+
+
+3.1 Single array and 3 stacks
+
+Hints: ---- (all)
+
+* Any sized stack?
+* Any objects/data?
+* With overflow/exception handling?
+
+
+[ , , , , , , ]
+
+Splitting the array and having two pointers we can at least have 2 stacks
+
+Can we extend this idea and divide the array into 3 pieces? Why not more?
+
+Circular array? 
+
+- Forgot to ask about usage of each stack/distribution of items which would affect which solution may be better
+- Should have designed a solution in code...
+
+# Probably a bad way to do this...
+
+class Three_Stacks:
+    def __init__(initial_size):
+        if initial_size < 3 and is_instance(initial_size, int):
+            raise ValueError("initial size expected to be at least 3 and an integer")
+
+        self.array = [None] * initial_size
+        self.stack_1_top = 0
+        self.stack_2_top = initial_size / 3
+        self.stack_3_top = initial_size * 2 / 3
+    
+    def get_stack(stack_number):
+        if stack_number == 1:
+            return self.stack_1_top
+
+    def add(stack_number):
+
+Rating:
+1. 1
+2. 1
+3. 2
+4. 1
+       
