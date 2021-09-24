@@ -3,4 +3,4 @@ image:
 
 tasks:
   - init: pip3 install -r code_quest_mentoring/2021/requirements.txt
-    command: "cd leetcode/python"
+    command: "cd practice/python/leetcode/medium/"
