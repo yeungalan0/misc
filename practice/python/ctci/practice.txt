@@ -1,3 +1,731 @@
+Rating:
+1. Did you need any hints?
+2. Finish within 30 minutes?
+3. Was the solution optimal?
+4. Were there bugs?
+
+1.9 Substring rotation
+
+Hints:
+
+Questions:
+* Assuming valid input?
+
+
+Brute force:
+1. Split strings at all indexes and check if yx matches the rotation string
+* This will be O(n^2)
+
+Algorithm:
+* A rotation of string can be thought of splitting a string into two sections,
+let's call them x, y, and where the original (non rotated) string can be thought
+of as xy, the new rotated string will be yx.
+* In our example x = wat and y = erbottle
+* Now notice that yxyx = erbottlewaterbottlewat which contains our xy (s1) string!
+* It will only do this if and only if s1 is a rotation of s2 (otherwise at least
+one character would be off).
+* We can now use the is_substring function to solve the problem.
+
+def is_rotation(s1, s2):
+    if len(s1) != len(s2):
+        return False
+
+    yxyx = s2 + s2
+
+    return is_substring(s1, yxyx)
+
+^ O(N) depending on how quick is_substring runs
+
+Rating:
+1. 5
+2. 5
+3. 5
+4. 5
+
+7.6 Jigsaw
+
+* Assume squarish shape 
+* Assume puzzle pictures have been determined
+* What's puzzle used for? Assuming solving/fun
+* Who is using this puzzle?
+* Assuming virtual puzzle model
+* Guarantee 1 way to solve?
+
+Class Puzzle:
+    def __init__(self, _length):
+        self.length = length
+        self.puzzle_grid = self.create_puzzle(_length)
+
+    def create_puzzle(self, length):
+        puzzle_matrix = []
+        for r in range(length):
+            puzzle_matrix.append([])
+            for c in range(length):
+                new_piece = self.create_piece(r, c, puzzle_matrix)
+                puzzle_matrix[r][c].append(new_piece)
+
+    def create_piece(self, r, c, puzzle_matrix):
+        new_piece = Piece()
+
+        # Set piece top
+        if r > 0:
+            new_piece.top = puzzle_matrix[r-1][c].bottom.inverse()
+        else:
+            new_piece.top.set_flat()
+
+        # Set piece right
+        if c < self.length - 1:
+            new_piece.right.set_random()
+        else:
+            new_piece.right.set_flat()
+
+        # Set piece bottom
+        if r < self.length - 1:
+            new_piece.bottom.set_random()
+        else:
+            new_piece.bottom.set_flat()
+
+        # Set piece left
+        if c > 0:
+            new_piece.left = puzzle_matrix[r][c-1].right.inverse()
+        else:
+            new_piece.left = set_flat()
+        
+Class Piece:
+    def __init__(self):
+        self.top = Edge()
+        self.bottom = Edge()
+        self.right = Edge()
+        self.left = Edge()
+    
+Class Edge:
+    def __init__(self):
+        self.pattern = None
+
+    def set_random():
+        self.pattern = select_random(EdgeStyles.pattern_map.keys())
+
+    def set_flat():
+        self.pattern = EdgeStyles.FLAT
+
+    def inverse():
+        return EdgeStyles.pattern_map[self.pattern]
+
+^ Didn't keep track of orientation :(
+
+Rating:
+1. 5
+2. 3
+3. 4
+4. 2
+
+7.3 Jukebox
+
+Questions: 
+* Whose the jukebox for
+* What are the main functions it needs?
+* How will it be used (standard or in some other way)?
+
+class States(Enum):
+    PLAYING = "Playing"
+    IDLE = "Idle"
+
+class JukeBox:
+    def __init__(self):
+        self.radio = Radio()
+        self.records = []
+        self.state = States.IDLE
+        self.input = Input()
+
+    def add_record(self, record):
+        if !isinstance(record, Record):
+            raise ValueError("Record type expected!")
+        
+        self.records.append(record)
+
+    def play_record(self, record_name):
+        try:
+            record_index = self.records.index(record_name)
+            self.state = States.PLAYING
+
+            # Play record
+            self.state = States.IDLE
+        catch ValueError:
+            print("Record not found!")
+            raise ValueError
+
+class Record:
+    def __init__(self, _name, _length, _content):
+        self.name = _name
+        self.length = _length
+        self.content = _content
+
+Rating:
+1. 3
+2. 3
+3. 3
+4. 3
+
+
+4.7 Build order
+
+Questions:
+* Can I assume valid input?
+* Does everything need a dependency?
+* Can I assume unique projects?
+
+Algorithm:
+* Naive: generate all possible combinations of projects and test against dependencies
+* This is O(N!) time in the worse case...
+
+* Build graph of projects with edges going to dependent projects
+* Add all projects without incoming edges (projects without dependencies) to the 
+build order
+* Remove edges from those nodes/mark built, and iterate on this algorithm
+* If no nodes without incoming edges are detected then there is a dependency
+cycle and the projects cannot be built
+
+def build_order(projects, dependencies):
+    # Returns dictionary of all nodes, where key is project, and value is dependency projects
+    # i.e. projects that need to be built before the key
+    dependency_graph = build_dependency_graph(projects, dependencies) # p + d
+    build_order = []
+
+    while len(build_order) < len(projects): # p
+        dependency_free_nodes = get_dependency_free_nodes(dependency_graph) # p
+
+        if len(dependency_free_nodes) == 0:
+            raise ValueError("There is a cycle in the dependency graph!")
+
+        for project in dependency_free_nodes:
+            build_order.add(project)
+            dependency_graph.remove(project)
+
+            # TODO: Forgot to remove dependency node from each element left in list...
+
+    return build_order
+
+def build_dependency_graph(projects, dependencies):
+    dependency_graph = {}
+
+    for project in projects:
+        dependency_graph[project]
+
+    for dependency in dependencies:
+        dependency_graph = dependency_graph.get(dependency[1], []).append(dependency[0])
+
+    return dependency_graph
+
+
+def get_dependency_free_nodes(dependency_graph):
+    dependency_free_nodes = []
+
+    for project, dependency_list in dependency_graph:
+        if len(dependency_list) == 0:
+            dependency_free_nodes.add(project)
+
+    return dependency_free_nodes
+
+# Time complexity = O(p^2 + p + d) = O(p^2 + d)
+* Projects length = p
+* Dependencies length = d
+
+# Space complexity = O(p^2)
+
+# Should have went with a graph for clarity...a dictionary has the exact same issues, but I just got confused on 
+# what the value represented, where that would have been more clear in a graph node object.
+
+Rating:
+1. 5
+2. 3
+3. 3
+4. 1
+
+6.10 Poison
+
+* 1000 bottles 1 poisoned
+* 10 test strips, can reuse as long as not poisoned
+* Can run tests once per day, and takes 7 days for a result
+
+Rating:
+1. 1
+2. 5
+3. 2
+4. 3
+
+6.4 Ants on a triangle
+
+Rating:
+1. 3
+2. 5
+3. 5
+4. 4
+
+6.9 100 lockers
+
+Rating:
+1. 3
+2. 3
+3. 4
+4. 3
+
+
+6.1 The heavy pill
+* 20 bottles of pills, 19 have 1g pills, but 1 has 1.1g pills
+* Find heavy bottle with 1 scale use
+
+Questions:
+* Do they all have same # of pills?
+
+Algorithm:
+1. Count pills in each bottle
+2. Place all bottles on scale
+3. Take bottles off one by one ensuring the scale weight decreases by # pills
+4. When it doesn't, that is your heavier bottle. Or if the last 1 doesn't have
+grams equal to pills
+
+^ I don't think the above will work...
+
+1. Put 1 pill on from bottle 1, 2 from bottle 2, 3 from bottle 3, etc.
+2. Now you should have an expected weight of 210 (sum from 1 to 20g)
+3. You should be able to calculate how much it's off by and dividing by .1g
+should get you the heavier bottle
+
+Rating:
+1. 3
+2. 5
+3. 5
+4. 5
+
+3.1 Three in one
+
+Questions:
+* What will be the expected distribution of elements across stacks, i.e will
+one likely have a lot more or will it likely be pretty uniform?
+
+Algorithm:
+* We could split the array into 3 sections and using pointers to each section
+we could have 3 separate stacks
+
+Class ThreeStacks:
+    def __init__(self):
+        self.array = [None] * 90
+        self.capacity_limit = len(array) // 3
+
+        # Stack top pointers
+        self.tops = [0, self.capacity_limit, self.capacity_limit * 2]
+
+    def push_on_stack(self, stack_number, value):
+        # TODO: Validate input
+
+        is_full = self.tops[stack_number] >= self.capacity_limit * (stack_number + 1)
+        
+        if is_full:
+            self.double_array_and_copy_elements() # TODO
+        
+        self.array[self.tops[stack_number]] = value
+        self.tops[stack_number] += 1
+
+    def peek(self, stack_number):
+        # TODO: Validate input
+        if is_empty():
+            print("stack is empty!")
+            return
+
+        top_element_index = self.tops[stack_number] - 1
+        return self.array[top_element_index]
+
+    def is_empty(self, stack_number):
+        return self.tops[stack_number] - 1 < self.capacity_limit * stack_number
+
+    def pop(self, stack_number):
+        # TODO: Validate input
+        if is_empty(stack_number):
+            print("stack is empty!")
+            return
+
+        top_element_index = self.tops[stack_number] - 1
+
+        top_element = self.array[top_element_index]
+        self.array[top_element_index] = None
+        self.tops[stack_number] -= 1
+
+        return top_element
+
+    def double_array_and_copy_elements(self)
+        new_array = [None] * len(array) * 2
+
+        for stack_number in range(3):
+            start = self.stack_capacity * stack_number
+            end = self.stack_capacity * (stack_number + 1)
+            for i, element in enumerate(self.array[start:end]):
+                offset = self.capacity_limit * 2 * stack_number
+                new_array[offset] = element
+
+        self.capacity_limit *= 2
+        self.array = new_array
+
+
+Rating:
+1. 5
+2. 4
+3. 4
+4. 4
+
+5.1 Insertion
+
+Hints:
+
+* two 32 bit numbers (M and N) and two bit positions i and j
+* Insert M into N such that M starts at bit j and ends at bit i
+* Bits j through i have enough space to fill all of M
+
+Question:
+* If j - i > M do I pad with zeros?
+
+Algorithm:
+* Naive approach is to loop through each element of N and once you hit j, start
+setting each bit to the bit of M, if j - i > len(M) pad with zeros
+
+def update_bits(n, m, i, j):
+    if i > j or i < 0 or j > 32:
+        return 0
+
+    allOnes = ~0
+
+    # 1s before position j, then 0s.
+    left = (allOnes << (j+1)) if j < 31 else 0
+
+    # 1s after position i
+    right = ((1 << i) - 1)
+
+    # All 1s except for 0 between i and j
+    mask = left | right
+
+    n_cleared = n & mask
+    m_shifted = m << i
+
+    return n_cleared | m_shifted
+
+Rating:
+1. 1
+2. 1
+3. 1
+4. 1
+
+5.8 Draw line
+
+Hints: 
+
+Questions:
+* Do all bytes start as 0?
+* 1 is black and 0 is white?
+
+Algorithm:
+* & every element in array with 0 to clear pixels
+* 
+
+def clear_array(screen):
+    for i, byte in enumerate(screen):
+        screen[i] = byte & 0
+
+def draw_line(screen, width, x1, x2, y):
+    start_byte_index = width / 8 * y
+    end_byte_index = start_byte_index + width / 2 - 1
+
+    # translate to byte coordinates
+    
+
+
+def set_indexes(x1, x2, byte):
+    mask = 0
+    for i in range(x1, x2 + 1):
+        mask <<= 1
+
+    if x2 + 2 < len(byte):
+        for i in range(x2 + 2, len(byte))
+            mask <<= 0
+
+    return mask
+
+Rating:
+1. 2
+2. 1
+3. 1
+4. 2
+
+5.5 
+
+Hint: -
+
+* I assume n is an integer?
+
+My solution:
+
+((n & (n - 1)) == 0)
+
+* Let's break this up into the pieces that occur first:
+1. ( n & (n - 1)...I'm not quite sure.
+2. We're checking if ( n & (n - 1) is ever equal to 0, but when would this be
+equal to 0 ever?
+3. When n is a power of 2. e.g. (1000 & 0111) == 0 is True
+4. Can this be True if it's not a power of two? 
+5. No I don't believe so, if I subtract 1 from any number not a power of two, in 
+binary the significant digits will remain, after being & thus, will not equal 0
+(note case with n = 1 means it is a power of 2 still)
+
+Hints: 
+
+Questions: 
+
+Rating:
+1. 4
+2. 5
+3. 5
+4. 5
+
+5.2 Binary to string
+
+Hint: -----
+
+* real # between 0 and 1 (0.72) passed in as double, print binary representation
+* If number can't be represented with at most 32 bits print "ERROR."
+
+Simplify: If these were ints...
+
+Rating:
+1. 1
+2. 1
+3. 1
+4. 1
+
+3.5 Sort stack
+
+Hint:
+
+* Sort stack with smallest items on top
+* Can use at most one other stack
+* Stacks support push, pop, peek, isEmpty()
+
+Questions:
+* Can I assume valid input?
+* Are elements integers, negative as well?
+* Do we care about mutating the original stack data?
+
+Algorithm:
+1. Create sorted_stack which is sorted (empty stack is a sorted stack)
+2. Pop element off orig_stack and check if it's greater than top of sorted_stack
+3. If greater or sorted_stack.is_empty() push element
+4. Else it's lesser, thus pop elements of sorted_stack onto orig_stack until 
+above criteria is met
+5. Repeat until orig_stack is empty
+6. pop all elements from sort_stack to orig_stack to get proper order and return
+
+^ O(N^2) worst case in reverse sorted order (or close to), O(N) space
+
+def sort_stack_with_stack(orig_stack):
+    if orig_stack.is_empty() or orig_stack.is_sorted():
+        return orig_stack
+
+    sorted_stack = stack() # Sorted stack with largest elements on top
+
+    while not orig_stack.is_empty():
+        element = orig_stack.pop()
+
+        while not sorted_stack.is_empty() and element < sorted_stack.peek():
+            # Put onto orig_stack in reverse sorted order
+            orig_stack.push(sorted_stack.pop())
+
+        sorted_stack.push(element)
+
+#        if sorted_stack.is_empty() or element >= sorted_stack.peek():
+#            sorted_stack.push(element)
+#        else:
+#            # Smaller element found
+#            while element < sorted_stack.peek() or not sorted_stack.is_empty():
+#                # Put onto orig_stack in reverse sorted order
+#                orig_stack.push(sorted_stack.pop())
+
+#            sort_stack.push(element)
+
+    # Reverse ordering onto orig_stack so it's in expected order
+    while not sorted_stack.is_empty():
+        orig_stack.push(sorted_stack.pop())
+
+    return orig_stack
+        
+Rating:
+1. 5
+2. 5
+3. 4
+4. 4 (minor)
+
+4.7 Build order
+
+Hints: -
+
+* List of projects and list of dependencies (project, dependent on 0 project)
+* All project dependencies must be built before project (first must be done 
+  before second), first are dependencies to second
+* Find a build order to build the project or error
+
+E.g.
+
+projects: a, b, c, d, e, f
+dependencies: (a, d), (f, b), (b, d), (f, a), (d, c)
+
+Questions:
+* Can I assume valid input?
+* Projects are unique?
+* No cycles?
+
+Ideas:
+* dependencies really are specifying node connections in a graph, where 
+  dependencies[0] is connected in direction to dependencies[1]
+* If I create this graph I just need to find 1 path that touches all nodes, and 
+  that is a valid solution
+
+Algorithm:
+
+Naive: Develop every permutation and check that it follows dependencies - O(N!)
+
+1. Turn dependencies list into a graph
+2. Depth first search to find any path with all projects
+   * Note using DFS since it will likely be faster to find any single valid 
+     path (and return) as BFS would find them all
+3. Probably need to iterate and try starting from all nodes as one node isn't 
+   guaranteed to have a path to all others as these are one directional 
+   connections
+   * Actually I can just iterate through all nodes that don't have an incoming 
+     edge, or the fewest?
+   * If there is no node without incoming edges then stop, the graph is cyclic
+     and you can't build this project 
+
+# TODO: deal with cycles
+def build_order(project_nodes, dependency_graph):
+    nodes_with_incoming_edge = set()
+    possible_start_nodes = set()
+
+    for node in project_nodes:
+        for adjacent_node in node.adjacent:
+        nodes_with_incoming_edge.add(adjacent_node)
+
+        # Just remove projects without a dependency
+        if len(node.adjacent) == 0:
+            project_nodes.remove(node)
+
+    for node in project_nodes:
+        if node not in nodes_with_incoming_edge:
+            possible_start_nodes.add(node)
+
+def find_path_with_all_nodes(project_nodes, node, path):
+    path.push(node)
+
+    if len(path) == len(project_nodes):
+        return (path, True)
+    
+    for adjacent_node in node.adjacent:
+        path, found = find_path_with_all_nodes(project_nodes, node, path)
+
+        if found:
+            return (path, found)
+    
+    path.pop() # Remove current node as no successful paths use this node
+
+* Didn't handle multiple build dependencies at all. 
+
+Rating:
+1. 2
+2. 1
+3. 1
+4. 1
+
+4.12 Paths with sum
+
+* Binary tree with int values (+-)
+* Algorithm to count number of paths that sum to a value
+* May start at any node, but must go down
+
+Questions:
+* Can I turn this into a binary search tree?
+
+Notes:
+
+
+Algorithm:
+1. Depth first search and add to count whenever the sum reaches the value
+2. Use breadth first search to move to each layer, and recursively perform above algorithm
+  - This may not be needed, since it's a binary tree, we can probably just recurse down each child
+3. Once all recursion and BFS has ended you return the final count (not integers are passed by value...)
+
+^ time complexity: O(N Log N) as it's the same as 4.4 and we need to run the sum 
+count calculation once per node above
+
+class PathCount():
+    def __init__():
+        self.count = 0
+
+def paths_with_sum(root, target_value):
+    # count_paths root
+    return paths_with_sum_traversal(root, target_value).count
+
+def paths_with_sum_traversal(node, target_value):
+    if not node:
+        return PathCount()
+
+    pathCount = PathCount()
+    paths_with_sum_helper(node, 0, target_value, pathCount)
+    pathCount.count += paths_with_sum_traversal(node.left, target_value).count
+    pathCount.count += paths_with_sum_traversal(node.right, target_value).count
+
+    return pathCount
+
+def paths_with_sum_helper(node: TreeNode, sum, target_value, pathCount: PathCount):
+    if not node:
+        return
+
+    sum += node.value
+
+    if sum == target_value:
+        pathCount.count += 1
+
+    paths_with_sum_helper(node.left, sum, target_value, pathCount)
+    paths_with_sum_helper(node.right, sum, target_value, pathCount)
+
+### Book algorithm
+
+def count_path_with_sum(root, target_sum):
+    if not root:
+        return 0
+
+    paths_from_root = count_paths_with_sum_from_node(root, target_sum, 0)
+
+    paths_on_left = count_path_with_sum(root.left, target_sum)
+    paths_on_right = count_path_with_sum(root.right, target_sum)
+
+    return paths_from_root + paths_on_left + paths_on_right
+
+def count_paths_with_sum_from_node(node, target_sum, current_sum):
+    if not node:
+        return 0
+
+    current_sum += node.value
+
+    total_paths = 0
+    if current_sum = target_sum:
+        total_paths += 1
+
+    total_paths += count_paths_with_sum_from_node(node.left, target_sum, current_sum)
+    total_paths += count_paths_with_sum_from_node(node.right, target_sum, current_sum)
+
+    return total_paths
+
+Rating: 
+1. 2
+2. 2
+3. 1
+4. 3
+
 4.4 Check balanced
 
 Hints: -
