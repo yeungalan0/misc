@@ -2,7 +2,7 @@ from typing import List
 from utils import parse_input
 
 
-def solve1(problem_input: List[int]) -> int:
+def solve1(problem_input: List[str]) -> int:
     pass
 
 
