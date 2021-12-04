@@ -4,26 +4,24 @@ from utils import parse_input
 
 def solve1(problem_input: List[str]) -> int:
     # Array of counts for each binary digit
-    places_count = [[0, 0] for x in problem_input[0]]
-
-    for binary_number_string in problem_input:
-        for i, digit_string in enumerate(binary_number_string):
-            if digit_string == "0":
-                places_count[i][0] += 1
-            else:
-                places_count[i][1] += 1
-
+    # places_count = [[0, 0] for x in problem_input[0]]
     gamma = 0
     epsilon = 0
 
-    # Let's start with least significant places
-    places_count.reverse()
+    for i in range(len(problem_input[0])):
+        count_1 = 0
 
-    for i, binary_count in enumerate(places_count):
-        if binary_count[1] > binary_count[0]:
-            gamma |= 1 << i
-        else:
-            epsilon |= 1 << i
+        for binary_str in problem_input:
+            if binary_str[i] == "1":
+                count_1 += 1
+
+        gamma = gamma << 1 | (count_1 > len(problem_input) // 2)
+        # epsilon = epsilon << 1 | (count_1 < len(problem_input) // 2)
+
+    # You can also calculate epsilon with the below, bit_mask needed since Python
+    # uses signed ints
+    bit_mask = (1 << len(problem_input[0])) - 1
+    epsilon = ~gamma & bit_mask
 
     return gamma * epsilon
 
