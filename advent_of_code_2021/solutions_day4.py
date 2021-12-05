@@ -1,5 +1,8 @@
 from typing import Dict, List, Match, Optional, Tuple
 from utils import parse_input
+from itertools import chain
+
+# Rewrote my solutions for understanding after being inspired by https://www.reddit.com/r/adventofcode/comments/r8i1lq/comment/hn7jm8x/?utm_source=share&utm_medium=web2x&context=3
 
 
 def solve1(problem_input: List[str]) -> int:
@@ -7,25 +10,21 @@ def solve1(problem_input: List[str]) -> int:
     # bingo_numbers is a list of numbers that will be called out for bingo
     bingo_numbers, tables = parse_bn_and_tables(problem_input)
 
-    # dict of each number to a list of tuples representing (table index, row, col)
-    number_dict = generate_number_dict(tables)
+    called = []
 
     for number in bingo_numbers:
-        for match in number_dict.get(number, []):
-            table = tables[match[0]]
-            row = match[1]
-            col = match[2]
+        called.append(number)
+        for table in tables:
+            rows_and_cols = chain(table, zip(*table))
 
-            table[row][col] = "-" + table[row][col]
-
-            solution = check_winner(table, row, col)
-
-            if solution:
-                return solution
+            if any(set(row_or_col) <= set(called) for row_or_col in rows_and_cols):
+                unmarked_numbers = [
+                    n for row in table for n in row if n not in called]
+                return sum(unmarked_numbers) * number
 
 
 def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[str], List[List[List[str]]]]:
-    bingo_numbers = problem_input[0].split(",")
+    bingo_numbers = list(map(int, problem_input[0].split(",")))
     tables = []
     curr_table = []
 
@@ -34,12 +33,9 @@ def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[str], List[List[
             tables.append(curr_table)
             curr_table = []
         else:
-            row = []
             numbers = line.split(" ")
-
-            for number in numbers:
-                if number.isdigit():
-                    row.append(number)
+            row = [int(number_str)
+                   for number_str in numbers if number_str.isdigit()]
 
             curr_table.append(row)
 
@@ -49,81 +45,24 @@ def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[str], List[List[
     return bingo_numbers, tables
 
 
-def generate_number_dict(tables: List[List[List[str]]]) -> Dict[str, List[Tuple[int, int, int]]]:
-    number_dict = {}
-
-    for table_number, table in enumerate(tables):
-        for row in range(len(table)):
-            for col in range(len(table[0])):
-                number_string = table[row][col]
-                new_value = (table_number, row, col)
-
-                if number_string not in number_dict:
-                    number_dict[number_string] = []
-
-                number_dict[number_string].append(new_value)
-
-    return number_dict
-
-
-def check_winner(table: List[List[str]], row: int, col: int) -> Optional[int]:
-    def get_unmarked_sum(table: List[List[str]]) -> int:
-        unmarked_sum = 0
-        for row in table:
-            for number_str in row:
-                number = int(number_str)
-                if number > 0:
-                    unmarked_sum += number
-
-        return unmarked_sum
-    # Check row
-    row_bingo = True
-    for number_str in table[row]:
-        if "-" not in number_str:
-            row_bingo = False
-            break
-
-    if row_bingo:
-        return get_unmarked_sum(table) * abs(int(table[row][col]))
-
-    # Check col
-    col_bingo = True
-    for row_index in range(len(table)):
-        number_str = table[row_index][col]
-        if "-" not in number_str:
-            col_bingo = False
-            break
-
-    if col_bingo:
-        return get_unmarked_sum(table) * abs(int(table[row][col]))
-
-    return None
-
-
 def solve2(problem_input: List[str]) -> int:
     # tables is a list of 2-D lists representing bingo tables
     # bingo_numbers is a list of numbers that will be called out for bingo
     bingo_numbers, tables = parse_bn_and_tables(problem_input)
 
-    # dict of each number to a list of tuples representing (table index, row, col)
-    number_dict = generate_number_dict(tables)
-    winning_tables = set(range(len(tables)))
+    called = bingo_numbers.copy()
 
-    for number in bingo_numbers:
-        for match in number_dict.get(number, []):
-            table = tables[match[0]]
-            row = match[1]
-            col = match[2]
+    while len(called) > 0:
+        last_called = called.pop()
+        for table in tables:
+            rows_and_cols = chain(table, zip(*table))
 
-            table[row][col] = "-" + table[row][col]
-
-            solution = check_winner(
-                table, row, col) if match[0] in winning_tables else None
-
-            if solution:
-                winning_tables.remove(match[0])
-                if len(winning_tables) == 0:
-                    return solution
+            if not any(set(row_or_col) <= set(called) for row_or_col in rows_and_cols):
+                # Remark the last_called number once we've found the last winning table
+                called.append(last_called)
+                unmarked_numbers = [
+                    n for row in table for n in row if n not in called]
+                return sum(unmarked_numbers) * last_called
 
 
 if __name__ == "__main__":
