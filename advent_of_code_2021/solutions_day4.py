@@ -5,7 +5,7 @@ from itertools import chain
 # Rewrote my solutions for understanding after being inspired by https://www.reddit.com/r/adventofcode/comments/r8i1lq/comment/hn7jm8x/?utm_source=share&utm_medium=web2x&context=3
 
 
-def solve1(problem_input: List[str]) -> int:
+def solve1(problem_input: List[str]) -> Optional[int]:
     # tables is a list of 2-D lists representing bingo tables
     # bingo_numbers is a list of numbers that will be called out for bingo
     bingo_numbers, tables = parse_bn_and_tables(problem_input)
@@ -22,11 +22,13 @@ def solve1(problem_input: List[str]) -> int:
                     n for row in table for n in row if n not in called]
                 return sum(unmarked_numbers) * number
 
+    return None
 
-def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[str], List[List[List[str]]]]:
+
+def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[int], List[List[List[int]]]]:
     bingo_numbers = list(map(int, problem_input[0].split(",")))
     tables = []
-    curr_table = []
+    curr_table: List = []
 
     for line in problem_input[2:]:
         if line == "":
@@ -45,7 +47,7 @@ def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[str], List[List[
     return bingo_numbers, tables
 
 
-def solve2(problem_input: List[str]) -> int:
+def solve2(problem_input: List[str]) -> Optional[int]:
     # tables is a list of 2-D lists representing bingo tables
     # bingo_numbers is a list of numbers that will be called out for bingo
     bingo_numbers, tables = parse_bn_and_tables(problem_input)
@@ -63,6 +65,8 @@ def solve2(problem_input: List[str]) -> int:
                 unmarked_numbers = [
                     n for row in table for n in row if n not in called]
                 return sum(unmarked_numbers) * last_called
+
+    return None
 
 
 if __name__ == "__main__":
