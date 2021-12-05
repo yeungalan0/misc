@@ -1,0 +1,8 @@
+{
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.pythonPath": "/home/ayeung/.local/share/virtualenvs/advent_of_code_2021-xzlyj746/bin/python",
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}/advent_of_code_2021"
+  }
+}

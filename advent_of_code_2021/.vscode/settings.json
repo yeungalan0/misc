@@ -1,0 +1,6 @@
+{
+  "python.pythonPath": "/home/ayeung/.local/share/virtualenvs/advent_of_code_2021-xzlyj746/bin/python",
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
+}
