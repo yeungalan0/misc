@@ -27,8 +27,8 @@ def solve1(problem_input: List[str]) -> Optional[int]:
 
 def parse_bn_and_tables(problem_input: List[str]) -> Tuple[List[int], List[List[List[int]]]]:
     bingo_numbers = list(map(int, problem_input[0].split(",")))
-    tables = []
-    curr_table: List = []
+    tables: List[List[List[int]]] = []
+    curr_table: List[List[int]] = []
 
     for line in problem_input[2:]:
         if line == "":
