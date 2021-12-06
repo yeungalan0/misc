@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from typing import Any, List
+from typing import Any, List, Union
 
 
 @dataclass
 class TestCase:
     """Class to keep track of test case and expected output"""
     __test__ = False  # Needed for pytest to ignore this class
-    case: List[str]
+    case: Any
     expected_output: Any
 
 
