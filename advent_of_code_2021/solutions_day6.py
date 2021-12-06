@@ -2,39 +2,44 @@ from typing import Dict, List
 from utils import parse_input
 
 
-def create_timer_dict(fish: List[int]) -> Dict[int, int]:
-    timer_dict: Dict[int, int] = {}
+# input: list of fish times before spawning
+# returns: list where index is days left before spawning and value is count of fish
 
-    for fish_timer in fish:
-        timer_dict[fish_timer] = timer_dict.get(fish_timer, 0) + 1
 
-    return timer_dict
+def create_count_list(fish_times: List[int], max_days: int) -> List[int]:
+    """
+    Parameters:
+    argument1: list of fish times before spawning
+
+    Returns:
+    list where index is days left before spawning and value is count of fish
+    """
+    # want to include the last day itself
+    fish_count_list = [0] * (max_days + 1)
+
+    for fish_time_left in fish_times:
+        fish_count_list[fish_time_left] += 1
+
+    return fish_count_list
 
 
 def solve1(problem_input: List[int], days: int = 80) -> int:
-    # Approach use hash map to store number of fish timers at a specific day
-    # Each day "subtract 1" from each timer by moving fish values from timer_day
-    # key to timer_day - 1
+    # Approach: use list to store number of fish at a specific day in spawn cycle
+    # where the index represents the days left in cycle and value is the count.
+    # Each day "subtract 1" from each timer by moving fish values from index to index -1
+    # by chopping list and adding appropriate number of spawned fish/reset fish
     # Sum all values at end
-    fish_timer_dict = create_timer_dict(problem_input)
     max_timer_day = 8
     reset_timer_day = 6
+    fish_timer_list = create_count_list(problem_input, max_timer_day)
 
     for _ in range(days):
-        tmp_next = fish_timer_dict.get(max_timer_day, 0)
-        tmp_curr = -1
-        for day in reversed(range(max_timer_day)):  # start with day 7
-            if day == 0:
-                fish_timer_dict[max_timer_day] = fish_timer_dict.get(0, 0)
-                fish_timer_dict[reset_timer_day] = fish_timer_dict.get(
-                    reset_timer_day, 0) + fish_timer_dict.get(0, 0)
-                fish_timer_dict[0] = tmp_next
-            else:
-                tmp_curr = fish_timer_dict.get(day, 0)
-                fish_timer_dict[day] = tmp_next
-                tmp_next = tmp_curr
+        fish_count_at_0 = fish_timer_list[0]
+        fish_timer_list = fish_timer_list[1:]
+        fish_timer_list.append(fish_count_at_0)
+        fish_timer_list[reset_timer_day] += fish_count_at_0
 
-    return sum(fish_timer_dict.values())
+    return sum(fish_timer_list)
 
 
 def solve2(problem_input: List[int]) -> int:

@@ -1,4 +1,4 @@
-from solutions_day6 import create_timer_dict, solve1, solve2
+from solutions_day6 import create_count_list, solve1, solve2
 import utils
 
 
@@ -16,16 +16,17 @@ def test_solve1():
         assert test_case.expected_output == actual_output
 
 
-def test_create_timer_dict():
+def test_create_count_list():
     test_cases = [
         utils.TestCase(  # Given test case
-            [3, 4, 3, 1, 2],
-            {1: 1, 2: 1, 3: 2, 4: 1}
+            ([3, 4, 3, 1, 2], 8),
+            [0, 1, 1, 2, 1, 0, 0, 0, 0]
         )
     ]
 
     for test_case in test_cases:
-        actual_output = create_timer_dict(test_case.case)
+        actual_output = create_count_list(
+            fish_times=test_case.case[0], max_days=test_case.case[1])
 
         assert test_case.expected_output == actual_output
 
