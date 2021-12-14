@@ -11,6 +11,10 @@ def solve1(problem_input: List[str]) -> int:
     for line in problem_input:
         stack: List[str] = []
         for symbol in line:
+            # try:
+            #     if symbol in closing_symbols:
+            #         opening = stack.pop()
+
             if symbol in closing_symbols:
                 if len(stack) > 0:
                     opening = stack.pop()
