@@ -1,57 +1,26 @@
 from typing import Coroutine, List, Set, Tuple
 from utils import parse_input
-from heapq import heappop, heappush
-
-
-# def tabulate_min_path(grid: List[List[int]]):
-#     memo = deepcopy(grid)
-
-#     memo[0][0] = 0
-
-#     for r in range(len(memo)):
-#         for c in range(len(memo[0])):
-#             if r == 0 and c == 0:
-#                 continue
-
-#             top_val = memo[r-1][c] if r-1 >= 0 else 10000000000000000
-#             left_val = memo[r][c-1] if c-1 >= 0 else 10000000000000000
-
-#             memo[r][c] = grid[r][c] + \
-#                 min(top_val, left_val)
-
-#     for row in memo:
-#         print(row)
-
-#     return memo[-1][-1]
+import heapq
+import math
 
 
 def djikstras_min_path(grid: List[List[int]]) -> int:
-    MAX_RISK = 100000000000
-    seen: Set[Tuple[int, int]] = set()
-
-    options = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-
-    h: List[Tuple[int, Tuple[int, int]]] = []
-    heappush(h, (0, (0, 0)))
-    seen.add((0, 0))
-
+    bests = [[math.inf] * len(row) for row in grid]
+    bests[0][0] = 0
+    queue: List[Tuple[int, int, int]] = []
+    heapq.heappush(queue, (0, 0, 0))
     while True:
-        min_risk, coordinate = heappop(h)
-
-        for option in options:
-            next_coordinate = (
-                coordinate[0] + option[0], coordinate[1] + option[1])
-
-            is_valid = 0 <= next_coordinate[0] < len(grid) and 0 <= next_coordinate[1] < len(
-                grid[0]) and next_coordinate not in seen
-
-            if is_valid:
-                next_risk = grid[coordinate[0]][coordinate[1]] + min_risk
-                if next_coordinate[0] == len(grid) - 1 and next_coordinate[1] == len(grid[1]) - 1:
-                    return next_risk
-                else:
-                    seen.add(next_coordinate)
-                    heappush(h, (next_risk, next_coordinate))
+        _, x0, y0 = heapq.heappop(queue)
+        c = bests[y0][x0]
+        if y0 == len(grid) - 1 and x0 == len(grid[y0]) - 1:
+            return c
+        for x1, y0 in ((x0 - 1, y0), (x0, y0 - 1), (x0, y0 + 1), (x0 + 1, y0)):
+            if y0 not in range(len(grid)) or x1 not in range(len(grid[y0])):
+                continue
+            d = c + grid[y0][x1]
+            if d < bests[y0][x1]:
+                bests[y0][x1] = d
+                heapq.heappush(queue, (d, x1, y0))
 
 
 def solve1(problem_input: List[List[int]]) -> int:
@@ -93,5 +62,5 @@ if __name__ == "__main__":
     problem_input_2d_ints = [[int(num) for num in line]
                              for line in problem_input]
 
-    # print(solve1(problem_input_2d_ints))
-    print(solve2(problem_input_2d_ints))  # 2973 too high
+    print(solve1(problem_input_2d_ints))
+    print(solve2(problem_input_2d_ints))  # 2967, 2973 too high
