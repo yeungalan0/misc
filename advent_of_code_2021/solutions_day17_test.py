@@ -1,4 +1,4 @@
-from solutions_day17 import lands_in_target, solve1, solve2
+from solutions_day17 import lands_in_target, solve2
 import utils
 
 
