@@ -6,7 +6,7 @@
     {
       "label": "go run",
       "type": "shell",
-      "command": "go run ./cmd/web",
+      "command": "export $(xargs < .env) && go run ./cmd/web -dsn \"web:$MYSQLPASS@/snippetbox?parseTime=true\"",
       "options": {
         "cwd": "/home/ayeung/git/misc/lets_go/snippetbox"
       },
