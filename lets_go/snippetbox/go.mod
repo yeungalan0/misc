@@ -14,3 +14,7 @@ require (
 )
 
 require github.com/alexedwards/scs/mysqlstore v0.0.0-20220528130143-d93ace5be94b
+
+require golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
+
+require github.com/justinas/nosurf v1.1.1
