@@ -1,3 +1,7 @@
 kotlin/
 *.pyc
 test.py
+.env
+scratch
+cert.pem
+key.pem
