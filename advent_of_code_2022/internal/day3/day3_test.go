@@ -6,10 +6,10 @@ import (
 	"github.com/yeungalan0/misc/advent_of_code_2022/internal/utils"
 )
 
-var testList = utils.ReadFileLinesToSlice("../../config/day2/input_test")
+var testList = utils.ReadFileLinesToSlice("../../config/day3/input_test")
 
 func TestSolve1(t *testing.T) {
-	want := 15
+	want := 157
 	got, err := Solve1(testList)
 	if err != nil {
 		t.Fatalf("got error: %v", err)
@@ -21,7 +21,7 @@ func TestSolve1(t *testing.T) {
 }
 
 func TestSolve2(t *testing.T) {
-	want := 12
+	want := 70
 	got, err := Solve2(testList)
 	if err != nil {
 		t.Fatalf("got error: %v", err)
