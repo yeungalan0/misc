@@ -141,3 +141,11 @@ func Contains(limit int, predicate func(i int) bool) bool {
 
 	return true
 }
+
+func HandleErr[T any](val T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+
+	return val
+}
