@@ -9,7 +9,7 @@ import (
 var testList = utils.ReadFileLinesToSlice("input_test")
 
 func TestSolve1(t *testing.T) {
-	want := 0
+	want := "CMZ"
 	got, err := solve1(testList)
 	if err != nil {
 		t.Fatalf("got error: %v", err)
@@ -21,7 +21,7 @@ func TestSolve1(t *testing.T) {
 }
 
 func TestSolve2(t *testing.T) {
-	want := 0
+	want := "MCD"
 	got, err := solve2(testList)
 	if err != nil {
 		t.Fatalf("got error: %v", err)
